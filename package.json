@@ -1,0 +1,159 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "cloud-ocr",
+  "title": "Cloud OCR",
+  "description": "Extract text from a screen area, the whole screen or a clipboard image with a cloud OCR API (any OpenAI-compatible vision model).",
+  "icon": "command-icon.png",
+  "author": "neilforest",
+  "categories": [
+    "Productivity"
+  ],
+  "license": "MIT",
+  "platforms": [
+    "macOS"
+  ],
+  "commands": [
+    {
+      "name": "recognize-text",
+      "title": "Recognize Text",
+      "description": "Detect all text from the captured screen area",
+      "mode": "no-view",
+      "preferences": [
+        {
+          "label": "Close Raycast before selection",
+          "name": "closeRaycast",
+          "description": "Disable if you want to select an area in the Raycast window. You can still use a keyboard shortcut to not see the Raycast window.",
+          "type": "checkbox",
+          "required": false,
+          "default": true
+        }
+      ]
+    },
+    {
+      "name": "recognize-text-fullscreen",
+      "title": "Recognize Text on Entire Screen",
+      "description": "Recognize text on the current display",
+      "mode": "no-view",
+      "preferences": [
+        {
+          "label": "Include Raycast window in full-screen capture",
+          "name": "includeRaycast",
+          "description": "Raycast is captured, then closed before the OCR result is handled.",
+          "type": "checkbox",
+          "required": false,
+          "default": false
+        }
+      ]
+    },
+    {
+      "name": "recognize-clipboard",
+      "title": "Recognize Text in Clipboard Image",
+      "description": "Extract text from an image or copied image file in the clipboard",
+      "mode": "no-view",
+      "preferences": [
+        {
+          "name": "clipboardResultAction",
+          "title": "After Recognition",
+          "description": "Copying text replaces the clipboard image. Paste and keep image pastes into the active app, then restores the original clipboard contents.",
+          "type": "dropdown",
+          "required": false,
+          "default": "copy",
+          "data": [
+            {
+              "title": "Copy Text (Replaces Image)",
+              "value": "copy"
+            },
+            {
+              "title": "Paste Text and Keep Image",
+              "value": "paste-restore"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "preferences": [
+    {
+      "name": "apiKey",
+      "title": "API Key",
+      "description": "API key for the OCR provider.",
+      "type": "password",
+      "required": true
+    },
+    {
+      "name": "baseUrl",
+      "title": "Base URL",
+      "description": "OpenAI-compatible endpoint. Default: Alibaba Cloud Model Studio (Beijing).",
+      "type": "textfield",
+      "required": true,
+      "default": "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    },
+    {
+      "name": "model",
+      "title": "Model",
+      "description": "Vision model used for OCR.",
+      "type": "textfield",
+      "required": true,
+      "default": "qwen-vl-ocr"
+    },
+    {
+      "name": "playSound",
+      "description": "Play the camera shutter sound when capturing a screen region.",
+      "type": "checkbox",
+      "required": false,
+      "label": "Play sounds",
+      "default": true,
+      "title": "Options"
+    },
+    {
+      "name": "showToast",
+      "description": "Show toast notifications for command results",
+      "type": "checkbox",
+      "required": false,
+      "label": "Show toast messages",
+      "default": true
+    },
+    {
+      "name": "ignoreLineBreaks",
+      "description": "Join recognized lines with spaces instead of line breaks.",
+      "type": "checkbox",
+      "required": false,
+      "label": "Ignore line breaks",
+      "default": false
+    },
+    {
+      "name": "keepImage",
+      "description": "Copy the captured image to the clipboard before recognition. Copying recognized text may replace it.",
+      "type": "checkbox",
+      "required": true,
+      "label": "Keep image in clipboard",
+      "default": false
+    },
+    {
+      "name": "customWordsList",
+      "title": "Custom Words List",
+      "description": "Comma-separated terms passed to the model as hints.",
+      "type": "textfield",
+      "required": false,
+      "label": "Custom Words List"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^2.11.1",
+    "@raycast/utils": "^2.3.3"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.2.0",
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "eslint": "^10.14.0",
+    "prettier": "^3.9.10",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "build": "ray build",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint"
+  }
+}
