@@ -1,7 +1,15 @@
-import { Clipboard, getPreferenceValues } from "@raycast/api";
+import {
+  Clipboard,
+  getPreferenceValues,
+  launchCommand,
+  LaunchType,
+  showToast,
+  Toast,
+} from "@raycast/api";
 import * as swiftBridge from "swift:../../swift";
 import { hideToast, showRecognizingToast } from "../utils";
 import { recognizeImageFile } from "./cloud";
+import { ActiveService, loadActiveService } from "./settings";
 import {
   parseCapturedImage,
   parseClipboardChangeCount,
@@ -20,12 +28,29 @@ const {
 
 const PASTE_SETTLE_MS = 400;
 
+// Opens the setup form instead of capturing when no service is set up.
+async function requireService(): Promise<ActiveService | undefined> {
+  const active = await loadActiveService();
+  if (active) return active;
+  await showToast({
+    style: Toast.Style.Failure,
+    title: "Set up an OCR service first",
+  });
+  await launchCommand({
+    name: "configure-ocr-service",
+    type: LaunchType.UserInitiated,
+  });
+  return undefined;
+}
+
 async function recognizeCaptured(
-  raw: Promise<string>,
+  capture: () => Promise<string>,
 ): Promise<RecognitionOutcome> {
+  const active = await requireService();
+  if (!active) return { status: "cancelled" };
   let captured: ReturnType<typeof parseCapturedImage>;
   try {
-    captured = parseCapturedImage(await raw);
+    captured = parseCapturedImage(await capture());
   } catch (error) {
     console.error(error);
     return { status: "error", message: "Failed to capture image" };
@@ -33,7 +58,7 @@ async function recognizeCaptured(
   if (!("path" in captured)) return captured;
   const toast = await showRecognizingToast();
   try {
-    return await recognizeImageFile(captured.path);
+    return await recognizeImageFile(active, captured.path);
   } finally {
     await hideToast(toast);
   }
@@ -43,7 +68,7 @@ export const recognizeText = (
   isFullScreen = false,
 ): Promise<RecognitionOutcome> => {
   const preference = getPreferenceValues<Preferences>();
-  return recognizeCaptured(
+  return recognizeCaptured(() =>
     captureImageSwift(
       isFullScreen,
       preference.keepImage,
@@ -53,7 +78,7 @@ export const recognizeText = (
 };
 
 export const recognizeClipboard = (): Promise<RecognitionOutcome> =>
-  recognizeCaptured(clipboardImageSwift());
+  recognizeCaptured(() => clipboardImageSwift());
 
 // Pastes text into the frontmost app, then puts the original clipboard back.
 // Nothing is pasted if the clipboard cannot be snapshotted, so the original

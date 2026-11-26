@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "cloud-ocr",
   "title": "Cloud OCR",
-  "description": "Extract text from a screen area, the whole screen or a clipboard image with a cloud OCR API (any OpenAI-compatible vision model).",
+  "description": "Extract text from a screen area, the whole screen or a clipboard image with a cloud OCR service such as Qwen-OCR, Mistral OCR, GLM-OCR, Google Cloud Vision, Azure, Baidu or Tencent.",
   "icon": "command-icon.png",
   "author": "neilforest",
   "owner": "neilforest-team",
@@ -71,32 +71,15 @@
           ]
         }
       ]
+    },
+    {
+      "name": "configure-ocr-service",
+      "title": "Configure OCR Service",
+      "description": "Choose the OCR service, keys and model, and test recognition",
+      "mode": "view"
     }
   ],
   "preferences": [
-    {
-      "name": "apiKey",
-      "title": "API Key",
-      "description": "API key for the OCR provider.",
-      "type": "password",
-      "required": true
-    },
-    {
-      "name": "baseUrl",
-      "title": "Base URL",
-      "description": "OpenAI-compatible endpoint. Default: Alibaba Cloud Model Studio (Beijing).",
-      "type": "textfield",
-      "required": true,
-      "default": "https://dashscope.aliyuncs.com/compatible-mode/v1"
-    },
-    {
-      "name": "model",
-      "title": "Model",
-      "description": "Vision model used for OCR.",
-      "type": "textfield",
-      "required": true,
-      "default": "qwen-vl-ocr"
-    },
     {
       "name": "playSound",
       "description": "Play the camera shutter sound when capturing a screen region.",

@@ -12,15 +12,22 @@ Cloud OCR is based on [ScreenOCR](https://www.raycast.com/huzef44/screenocr). Sc
 
 ## Setup
 
-1. Create an API key in [Alibaba Cloud Model Studio](https://bailian.console.aliyun.com/) (or any provider with an OpenAI-compatible vision endpoint).
-2. Open a command and enter the API key in the extension preferences.
+Run **Configure OCR Service**. Picking a service fills in its Base URL and model; enter the keys, press ⌘T to test on a sample image, then Save. Recognition commands open this form until a service is saved.
 
-| Preference | Default                                             |
-| ---------- | --------------------------------------------------- |
-| Base URL   | `https://dashscope.aliyuncs.com/compatible-mode/v1` |
-| Model      | `qwen-vl-ocr`                                       |
+| OCR Service                                      | Models                                                      | Keys                                  |
+| ------------------------------------------------ | ----------------------------------------------------------- | ------------------------------------- |
+| Qwen-OCR · Alibaba Cloud (China / International) | `qwen-vl-ocr`, `qwen3.5-ocr`                                | API Key                               |
+| SiliconFlow                                      | `deepseek-ai/DeepSeek-OCR`, `PaddlePaddle/PaddleOCR-VL-1.5` | API Key                               |
+| Mistral OCR                                      | `mistral-ocr-latest`                                        | API Key                               |
+| GLM-OCR · Zhipu AI / Z.ai                        | `glm-ocr`                                                   | API Key                               |
+| Ollama                                           | `glm-ocr`, `deepseek-ocr`                                   | none                                  |
+| Google Cloud Vision                              | `DOCUMENT_TEXT_DETECTION`, `TEXT_DETECTION`                 | API Key                               |
+| Azure AI Vision                                  | Image Analysis 4.0 Read                                     | API Key, Base URL = resource endpoint |
+| Baidu OCR                                        | `accurate_basic`, `general_basic`                           | API Key + Secret Key                  |
+| Tencent Cloud OCR                                | `GeneralAccurateOCR`, `GeneralBasicOCR`                     | SecretId + SecretKey                  |
+| Custom (OpenAI-compatible)                       | any                                                         | optional API Key                      |
 
-To switch provider, change Base URL and Model. Outside mainland China, use `https://dashscope-intl.aliyuncs.com/compatible-mode/v1`.
+For OpenAI-compatible services, more OCR models are loaded from the provider's `/models` endpoint. **Custom…** in the model list takes any name. Each service keeps its own URL, keys and model. Keys stay in Raycast's local encrypted storage; ⌘⇧E shows or hides them, ⌃X clears them.
 
 Screen capture requires the Screen Recording permission for Raycast (System Settings → Privacy & Security → Screen Recording).
 
