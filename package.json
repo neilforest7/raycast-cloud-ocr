@@ -5,6 +5,7 @@
   "description": "Extract text from a screen area, the whole screen or a clipboard image with a cloud OCR API (any OpenAI-compatible vision model).",
   "icon": "command-icon.png",
   "author": "neilforest",
+  "owner": "neilforest-team",
   "categories": [
     "Productivity"
   ],
@@ -154,6 +155,7 @@
     "build": "ray build",
     "dev": "ray develop",
     "fix-lint": "ray lint --fix",
-    "lint": "ray lint"
+    "lint": "ray lint",
+    "publish": "ray publish"
   }
 }
